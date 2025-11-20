@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeggieScale Juicy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="juice-background">
+        <div class="floating-fruit f1">🍌</div>
+        <div class="floating-fruit f2">🍎</div>
+        <div class="floating-fruit f3">🍊</div>
+        <div class="floating-fruit f4">🍇</div>
+        <div class="floating-fruit f5">🍋</div>
+        <div class="floating-fruit f6">🍉</div>
+        <div class="floating-fruit f7">🥝</div>
+        <div class="floating-fruit f8">🍒</div>
+    </div>
+
+    <div id="notification-area"></div>
+
+    <div class="app-layout">
+        <header>
+            <div class="brand-wrapper">
+                <div class="logo-text">
+                    <span class="letter l1">V</span><span class="letter l2">e</span><span class="letter l3">g</span><span class="letter l4">g</span><span class="letter l5">i</span><span class="letter l6">e</span><span class="scale-word">Scale</span>
+                </div>
+                <div class="leaf-icon">🍃</div>
+            </div>
+            <div class="live-badge"><div class="dot"></div> AI ACTIVE</div>
+        </header>
+
+        <div class="main-grid">
+            <div class="panel scan-panel">
+                <div class="switch-capsule">
+                    <div class="switch-bg"></div>
+                    <button class="mode-toggle active" onclick="setMode('camera')">📸 Live</button>
+                    <button class="mode-toggle" onclick="setMode('upload')">📁 Upload</button>
+                </div>
+
+                <div class="screen-container">
+                    <div id="camera-view" class="screen active">
+                        <video id="video" autoplay playsinline></video>
+                        <canvas id="canvas" style="display:none;"></canvas>
+                        <div class="scan-overlay-anim"></div>
+                    </div>
+
+                    <div id="upload-view" class="screen hidden">
+                        <div class="upload-trigger" onclick="triggerUpload()">
+                            <div class="dashed-border">
+                                <div class="plus-icon">📂</div>
+                                <p>Click to Drop Fruit Photo</p>
+                            </div>
+                        </div>
+                        <img id="preview-image" class="hidden">
+                        <input type="file" id="file-input" accept="image/*" hidden>
+                    </div>
+                </div>
+
+                <button class="mega-btn" onclick="processImage()">
+                    <span class="btn-content">
+                        <span class="btn-icon">🔎</span>
+                        SCAN NOW
+                    </span>
+                    <div class="btn-shine"></div>
+                </button>
+            </div>
+
+            <div class="panel receipt-panel">
+                <div class="receipt-top">
+                    <h3>Fresh Basket</h3>
+                    <span class="receipt-id">#001</span>
+                </div>
+                <div class="items-scroll" id="cart-items">
+                    <div class="empty-placeholder">
+                        <div class="ghost-icon">🍍</div>
+                        <p>Feed me fruits!</p>
+                    </div>
+                </div>
+                <div class="receipt-bottom">
+                    <div class="total-row">
+                        <span>Total</span>
+                        <span id="total-price">0.00 Lei</span>
+                    </div>
+                    <button class="pay-btn" onclick="openReceiptModal()">CHECKOUT ➔</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="receipt-modal" class="modal-overlay hidden">
+        <div class="fruity-receipt-card">
+            <div class="receipt-decoration">🍊 🍋 🍎</div>
+            <h2>JUICY RECEIPT</h2>
+            <p class="shop-name">VeggieScale Market</p>
+            <div class="receipt-divider"></div>
+            <div id="final-items-list" class="final-list"></div>
+            <div class="receipt-divider"></div>
+            <div class="final-total">
+                <span>TOTAL PAID:</span>
+                <span id="final-price">0.00 Lei</span>
+            </div>
+            <div class="barcode">||| || |||| || |||||</div>
+            <div class="modal-actions">
+                <button class="action-btn back-btn" onclick="closeReceiptModal()">🔙 BACK</button>
+                <button class="action-btn export-btn" onclick="exportToDatabase()">💾 EXPORT DB</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loader">
+        <div class="fruit-loader">
+            <span>🍋</span><span>🍊</span><span>🍎</span>
+        </div>
+        <p>Squeezing Data...</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

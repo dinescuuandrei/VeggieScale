@@ -1,0 +1,7 @@
+venv/
+.idea/
+__pycache__/
+*.pyc
+Dataset_VeggieScale_DDG/
+dataset/
+.DS_Store

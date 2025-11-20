@@ -1,0 +1,297 @@
+:root {
+    --font-main: 'Baloo 2', cursive;
+    --color-bg: #FFDEE9;
+    --panel-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+    --shadow-soft: 0 15px 35px rgba(0,0,0,0.1);
+    --btn-color: #6c5ce7;
+    --text-dark: #2d3436;
+    --accent-green: #00b894;
+    --accent-red: #ff7675;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-main);
+    height: 100vh;
+    overflow: hidden;
+    background-color: #FFDEE9;
+    background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-dark);
+}
+
+/* --- FUNDAL ANIMAT FRUCTE --- */
+.juice-background {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1; pointer-events: none; overflow: hidden;
+}
+.floating-fruit {
+    position: absolute; font-size: 4rem; opacity: 0.4; filter: blur(2px);
+    animation: floatUp 15s infinite linear; user-select: none;
+}
+.f1 { left: 10%; animation-duration: 12s; font-size: 5rem; }
+.f2 { left: 25%; animation-duration: 18s; animation-delay: -5s; }
+.f3 { left: 40%; animation-duration: 10s; animation-delay: -2s; font-size: 6rem; }
+.f4 { left: 55%; animation-duration: 20s; font-size: 3rem; }
+.f5 { left: 70%; animation-duration: 15s; animation-delay: -8s; }
+.f6 { left: 85%; animation-duration: 11s; font-size: 4.5rem; }
+.f7 { left: 5%; animation-duration: 22s; animation-delay: -10s; font-size: 2rem; }
+.f8 { left: 90%; animation-duration: 16s; animation-delay: -3s; }
+@keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* --- LAYOUT --- */
+.app-layout {
+    width: 95%; max-width: 1300px; height: 90vh;
+    display: flex; flex-direction: column; gap: 20px;
+}
+
+header {
+    display: flex; justify-content: space-between; align-items: center; padding: 0 20px;
+}
+.brand-wrapper { display: flex; align-items: center; gap: 10px; }
+.logo-text { font-size: 3.5rem; font-weight: 800; line-height: 1; cursor: default; }
+.letter { display: inline-block; color: #d63031; transition: transform 0.2s; }
+.letter:hover { transform: translateY(-10px) scale(1.2); color: #e17055; }
+.scale-word {
+    color: #fff; background: #00b894; padding: 2px 10px; border-radius: 15px;
+    transform: rotate(-5deg); display: inline-block; font-size: 3rem;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+}
+.leaf-icon { font-size: 3rem; animation: sway 3s infinite ease-in-out; }
+@keyframes sway { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
+
+.live-badge {
+    background: #fff; padding: 8px 16px; border-radius: 50px;
+    font-weight: 800; color: #00b894; display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.dot { width: 10px; height: 10px; background: #00b894; border-radius: 50%; animation: blink 1s infinite; }
+@keyframes blink { 50% { opacity: 0.5; } }
+
+.main-grid {
+    display: grid; grid-template-columns: 1.6fr 1fr; gap: 30px; height: 100%;
+}
+
+.panel {
+    background: var(--panel-bg); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    border: var(--glass-border); border-radius: 40px;
+    box-shadow: var(--shadow-soft); padding: 25px;
+    display: flex; flex-direction: column; overflow: hidden;
+}
+
+/* --- SWITCHER --- */
+.switch-capsule {
+    background: #dfe6e9; border-radius: 50px; padding: 5px;
+    display: flex; position: relative; margin-bottom: 20px;
+    width: fit-content; align-self: center;
+}
+.mode-toggle {
+    background: transparent; border: none; padding: 10px 30px;
+    font-family: var(--font-main); font-weight: 800; font-size: 1.1rem;
+    color: #636e72; cursor: pointer; z-index: 2; transition: color 0.3s;
+}
+.mode-toggle.active { color: #2d3436; }
+
+/* --- SCREEN & UPLOAD (MODIFICAT) --- */
+.screen-container {
+    flex: 1; background: #000; border-radius: 30px;
+    position: relative; overflow: hidden;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+    border: 4px solid #fff;
+}
+.screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+.hidden { display: none !important; }
+video, #preview-image { width: 100%; height: 100%; object-fit: cover; }
+
+.scan-overlay-anim {
+    position: absolute; top: 10%; left: 10%; right: 10%; bottom: 10%;
+    border: 4px dashed rgba(255,255,255,0.5); border-radius: 20px;
+    animation: pulsateBorder 2s infinite; pointer-events: none;
+}
+@keyframes pulsateBorder { 50% { border-color: rgba(255,255,255,1); transform: scale(1.01); } }
+
+/* --- STIL NOU PENTRU UPLOAD --- */
+#upload-view {
+    /* Fundal gradient frumos, nu negru */
+    background: radial-gradient(circle at center, #fff1eb 0%, #ace0f9 100%);
+}
+
+.upload-trigger {
+    width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer;
+}
+
+.dashed-border {
+    border: 4px dashed rgba(108, 92, 231, 0.3); /* Violet deschis */
+    border-radius: 30px;
+    width: 80%; height: 80%;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    background: rgba(255,255,255,0.4);
+    transition: all 0.3s ease;
+}
+
+.upload-trigger:hover .dashed-border {
+    background: rgba(255,255,255,0.7);
+    border-color: rgba(108, 92, 231, 0.8);
+    transform: scale(1.02);
+}
+
+.plus-icon {
+    font-size: 4rem; margin-bottom: 10px;
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+}
+
+.upload-trigger p {
+    font-size: 1.2rem; font-weight: 800; color: #6c5ce7;
+}
+
+
+/* --- BUTTON ANIMATIE NOUA --- */
+.mega-btn {
+    margin-top: 20px; background: var(--btn-color); color: white; border: none;
+    padding: 20px; border-radius: 25px;
+    font-family: var(--font-main); font-weight: 900; font-size: 1.5rem;
+    cursor: pointer; position: relative; overflow: hidden;
+    box-shadow: 0 10px 0px #4834d4, 0 15px 20px rgba(0,0,0,0.2);
+    transition: all 0.1s;
+}
+.mega-btn:active { transform: translateY(10px); box-shadow: 0 0px 0px #4834d4; }
+.btn-content { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 15px; }
+
+.btn-icon {
+    display: inline-block;
+    transition: transform 0.3s;
+}
+.mega-btn:hover .btn-icon {
+    transform: rotate(15deg) scale(1.2); /* Animatie lupa */
+}
+
+.btn-shine {
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: rotate(45deg); animation: shine 3s infinite;
+}
+@keyframes shine { 0% { left: -100%; } 20% { left: 100%; } 100% { left: 100%; } }
+
+
+/* --- RESTUL CSS --- */
+.receipt-top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 15px; border-bottom: 2px dashed #b2bec3;
+}
+.receipt-top h3 { font-size: 1.8rem; font-weight: 800; }
+.receipt-id { font-weight: bold; color: #b2bec3; }
+.items-scroll { flex: 1; overflow-y: auto; padding-right: 10px; margin-top: 15px; }
+.empty-placeholder { text-align: center; margin-top: 50px; color: #b2bec3; opacity: 0.7; }
+.ghost-icon { font-size: 4rem; margin-bottom: 10px; animation: floatUp 3s infinite ease-in-out; }
+.cart-item {
+    background: #fff; padding: 15px; border-radius: 20px;
+    margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+.item-name { font-weight: 800; font-size: 1.1rem; }
+.item-meta { font-size: 0.8rem; color: #636e72; }
+.item-price { font-weight: 900; color: var(--accent-green); font-size: 1.2rem; }
+.receipt-bottom {
+    margin-top: 20px; background: #fff; padding: 20px; border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+.total-row { display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: 900; margin-bottom: 15px; }
+.pay-btn {
+    width: 100%; padding: 15px; border: none; border-radius: 15px;
+    background: var(--text-dark); color: #fff; font-weight: 800; font-family: var(--font-main);
+    font-size: 1.1rem; cursor: pointer;
+}
+.pay-btn:hover { transform: scale(1.02); }
+
+#loader {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255,255,255,0.9); z-index: 9999;
+    display: none; flex-direction: column; justify-content: center; align-items: center;
+}
+#loader.show { display: flex; }
+.fruit-loader { font-size: 3rem; margin-bottom: 20px; }
+.fruit-loader span { display: inline-block; animation: jump 0.6s infinite alternate; }
+.fruit-loader span:nth-child(2) { animation-delay: 0.2s; }
+.fruit-loader span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes jump { to { transform: translateY(-20px); } }
+
+#notification-area {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000;
+    display: flex; flex-direction: column; gap: 10px;
+}
+.toast {
+    background: #fff; padding: 15px 25px; border-radius: 50px; font-weight: 800;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: slideDown 0.3s;
+}
+.toast.success { color: var(--accent-green); border: 2px solid var(--accent-green); }
+.toast.error { color: var(--accent-red); border: 2px solid var(--accent-red); }
+@keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } }
+
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(45, 52, 54, 0.8); backdrop-filter: blur(8px);
+    z-index: 10001; display: flex; justify-content: center; align-items: center;
+    animation: fadeIn 0.3s;
+}
+.fruity-receipt-card {
+    background: linear-gradient(180deg, #ffffff 0%, #fff0f5 100%);
+    width: 400px; padding: 40px 30px; border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(255, 107, 107, 0.4);
+    text-align: center; position: relative; border: 4px solid #fff;
+    animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+}
+.fruity-receipt-card::after {
+    content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 10px;
+    background: linear-gradient(45deg, transparent 33.333%, #fff 33.333%, #fff 66.667%, transparent 66.667%),
+                linear-gradient(-45deg, transparent 33.333%, #fff 33.333%, #fff 66.667%, transparent 66.667%);
+    background-size: 20px 40px;
+}
+.receipt-decoration { font-size: 2rem; margin-bottom: 10px; animation: bounce 2s infinite; }
+.fruity-receipt-card h2 {
+    font-family: 'Rubik Mono One', sans-serif; color: #ff6b6b;
+    font-size: 2rem; margin-bottom: 5px; text-shadow: 2px 2px 0px #ffe66d;
+}
+.shop-name { color: #b2bec3; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+.receipt-divider {
+    height: 2px; background: repeating-linear-gradient(to right, #dfe6e9 0, #dfe6e9 10px, transparent 10px, transparent 20px);
+    margin: 15px 0;
+}
+.final-list { text-align: left; max-height: 200px; overflow-y: auto; margin-bottom: 20px; }
+.final-item-row {
+    display: flex; justify-content: space-between; padding: 10px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05); font-weight: 700; color: #2d3436;
+}
+.final-total {
+    display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: 900; color: #2d3436;
+    background: #ffe66d; padding: 15px; border-radius: 15px;
+    transform: rotate(-2deg); box-shadow: 3px 3px 0px rgba(0,0,0,0.1); margin-bottom: 20px;
+}
+.barcode {
+    font-family: 'Courier New', monospace; letter-spacing: 5px; font-weight: 900; font-size: 1.5rem;
+    opacity: 0.5; margin-bottom: 25px; transform: scaleY(1.5);
+}
+.modal-actions { display: flex; gap: 15px; }
+.action-btn {
+    flex: 1; padding: 15px; border: none; border-radius: 15px;
+    font-weight: 900; font-family: var(--font-main); cursor: pointer;
+    transition: transform 0.2s; font-size: 1rem;
+}
+.back-btn { background: #dfe6e9; color: #636e72; }
+.export-btn { background: #00b894; color: white; box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4); }
+.action-btn:hover { transform: translateY(-3px); }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes popUp { from { transform: scale(0.8) translateY(50px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
